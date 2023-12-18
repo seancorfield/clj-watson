@@ -2,13 +2,18 @@
 Clojure's software composition analysis (SCA).
 clj-watson scans dependencies in a clojure `deps.edn` seeking for vulnerable direct/transitive dependencies and build a report with all the information needed to help you understand how the vulnerability manifest in your software.
 
+> Note: this is a fork of [clj-holmes/clj-watson](https://github.com/clj-holmes/clj-watson) that has been updated to use DependencyCheck 9.0.x and the new NIST NVD API. Unlike the upstream origin, the main branch is not protected and the commits in this fork have not been signed -- so use this fork at your own discretion. This fork exists so that I can continue to use `clj-watson` if NIST cut off access to the old data feeds that the upstream origin depends on, and it has not yet been updated to use the new NIST NVD API.
+
+* v5.x.x -- uses DependencyCheck 9.0.x and the new NIST NVD API.
+* v4.x.x -- uses an earlier version of DependencyCheck and the old NVD data feeds, which have been deprecated.
+
 ## Quick Start
 
 clj-watson can be added as an alias on a per-project basis in the project `deps.edn` file:
 
 ```clojure
 ;; in :aliases
-  :clj-watson {:replace-deps {io.github.clj-holmes/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}
+  :clj-watson {:replace-deps {io.github.seancorfield/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}
                :main-opts ["-m" "clj-watson.cli" "scan"]}
 ```
 
@@ -23,7 +28,7 @@ The first time it runs, it will download the vulnerability database, which can t
 It can also be installed as a Clojure CLI tool:
 
 ```bash
-clojure -Ttools install-latest :lib io.github.clj-holmes/clj-watson :as clj-watson
+clojure -Ttools install-latest :lib io.github.seancorfield/clj-watson :as clj-watson
 ```
 
 Then run it with:
@@ -106,18 +111,18 @@ In order to get the auto remediate suggestion it's necessary to provide a `--sug
 # Installation
 It's possible to install clj-watson as a clojure tool and invoke it.
 ```bash
-$ clojure -Ttools install-latest :lib io.github.clj-holmes/clj-watson :as clj-watson
+$ clojure -Ttools install-latest :lib io.github.seancorfield/clj-watson :as clj-watson
 $ clojure -Tclj-watson scan '{:output "stdout" :fail-on-result true :deps-edn-path "deps.edn" :suggest-fix true :aliases ["*"] :database-strategy "dependency-check"}'
 ```
 It can also be called directly.
 ```bash
-$ clojure -Sdeps '{:deps {io.github.clj-holmes/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}}' -M -m clj-watson.cli scan -p deps.edn
+$ clojure -Sdeps '{:deps {io.github.seancorfield/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}}' -M -m clj-watson.cli scan -p deps.edn
 ```
 Or you can just add it to your project `deps.edn`
 ```clojure
 {:deps {}
  :aliases
- {:clj-watson {:extra-deps {io.github.clj-holmes/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}
+ {:clj-watson {:extra-deps {io.github.seancorfield/clj-watson {:git/tag "v4.1.3" :git/sha "56dfd3e"}}
                :main-opts ["-m" "clj-watson.cli" "scan"]}}}
 ```
 
